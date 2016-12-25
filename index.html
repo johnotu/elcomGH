@@ -6,48 +6,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="../../favicon.ico">
 
-    <title>ElecomGH Dashboard</title>
-
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <title>ElcomGH Dashboard</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link href="css/style.css" rel="stylesheet">
+    
   </head>
 
   <body>
-    <div class="site-wrapper">
-      <div class="site-wrapper-inner">
-        <div class="cover-container">
-          <div class="masthead clearfix">
-            <div class="inner">
-              <h2 class="masthead-brand">ElecomGH</h2>
-            </div>
-          </div>
+  	<div class="container">
+  		<div class="row">
+  			<div class="col-xs-12 col-sm-12 col-md-12 header">
+  				<h2>ElcomGH Dashboard</h2>
+  			</div>
+  		</div>
+  		<div class="row">
+  			<div class="col-xs-12 col-sm-6 col-md-3 figure">
+  				<h3 class="cover-heading" id="figure">285</h3>
+  				<h3 class="cover-heading">kWh</h3>
+  			</div>
+  			<div class="col-xs-12 col-sm-6 col-md-2 control">
+  				<a href="#" class="btn btn-default btn-lg">
+  					<span class="glyphicon glyphicon-off"></span>
+  				</a>
+  			</div>
+  			<div class="col-xs-12 col-sm-12 col-md-12 chart">
+  				<div class="canvas-container">
+        		<canvas id="consumption"></canvas>
+        	</div>
+  			</div>
+  		</div>
+  	</div>
 
-          <div class="inner cover">
-            <h1 class="cover-heading" id="figure">285</h1>
-            <h1 class="cover-heading">kWh</h1>
-            <form>
-            	<div class="form-group">
-            		<label for="name">Name</label>
-            		<input type="text" class="form-control" id="name">
-            	</div>
-            	<button type="button" class="btn btn-default" id="submitname">Submit</button>
-            	<p id="response"></p>
-            </form>
-          </div>
-
-          <div class="mastfoot">
-            <div class="inner">
-              <p>ElecomGH Dashboard by <a href="https://twitter.com/john_otu">@john_otu</a>.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <script src="js/jquery.min.js"></script>
-    <script src="js/dv_sdk.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://library.devless.io/cdn/1.0/dv_sdk.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.js"></script>
     <script src="js/script.js"></script>
   </body>
 </html>
