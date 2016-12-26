@@ -37,7 +37,7 @@ $(function(){
 						datasets: [{
 							label: 'Electricity Consumption',
 							data: yaxis,
-							backgroundColor: "rgba(153,255,51,0.4)"
+							backgroundColor: "rgba(68,173,142,0.5)"
 						}]
 					}
 				};
@@ -45,11 +45,10 @@ $(function(){
 		var myLiveChart = new Chart(ctx, startingData);
 		setInterval(function(){
 			id++;
-			params = {where:["id,"+id]};
-			Devless.queryData('elecomgh', 'consumption', params, function(response){
-				console.log(response);
-				var newDateTime = response.payload.results[0].datetime;
-				var newAmount = response.payload.results[0].amount;
+			var params = {where:["id,"+id]};
+			Devless.queryData('elcomgh', 'consumption', params, function(response){
+				var newDateTime = response.payload.results[0].datetime,
+						newAmount = response.payload.results[0].amount;
 				xaxis.push(newDateTime);
 				yaxis.push(newAmount);
 				if(xaxis.length > 50){
@@ -57,10 +56,10 @@ $(function(){
 					yaxis.shift();
 				}
 				myLiveChart.update();
-			})
+			});
 		}, 5000);
 	}
 	
-	saveData();
-	//chartData();
+	//saveData();
+	chartData();
 });
