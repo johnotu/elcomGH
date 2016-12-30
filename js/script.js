@@ -15,9 +15,6 @@ $(function(){
 		});
 	}
 
-	function getDailyAverage(){
-		Devless.queryData('elcomgh', 'consumption', {where:} )
-	}
 	/*
 	var constants = { "token":"7f0449c4d77ade309aa26ef0a9de6bbe", "domain":"http://localhost:3000" }; Devless = new Devless(constants);
 	
@@ -53,6 +50,26 @@ $(function(){
 			}
 		});
 	});
+
+	function dayAverage(){
+		var dayList = [], dayTotal = 0;
+		setInterval(function(){
+			var dt = new Date(), day = String(dt.getDate());
+			Devless.queryData('elcomgh', 'consumption', {where:["day,"+day]}, function(response){
+				var dtDay = response.payload.results, dayLength = dtDay.length;
+				for (var i=0; i<dayLength; i++){
+					dayList.push(dtDay[i].day);
+				}
+				var dayListLength = dayList.length;
+				for(var j=0; j<dayListLength; j++){
+					dayTotal += dayList[j];
+				}
+				var avg = Math.floor(dayTotal/dayListLength);
+				$('#daily').text(avg);
+			})
+		}, 60000)
+	}
+
 
 	function chartData(){
 		Chart.defaults.global.responsive = true;
@@ -94,4 +111,5 @@ $(function(){
 	updateSwitchState();
 	//saveData();
 	chartData();
+	//dayAverage();
 });
