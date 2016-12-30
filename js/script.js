@@ -1,13 +1,29 @@
 $(function(){
 	
 	var constants = { "token":"1c953b74aff7b08ee80d5e4b2f5a8651", "domain":"https://frosty-shape-9375.herokuapp.com." }; Devless = new Devless(constants);
-	
+
+	function updateSwitchState(){
+		var params = {where:['id,1']}
+		Devless.queryData('elcomgh', 'switchstate', params, function(response){
+			console.log(response);
+			var results = response.payload.results[0].state;
+			if(results === 1){
+				$('#power-state').text('ON');
+			} else {
+				$('#power-state').text('OFF');
+			}
+		});
+	}
+
+	function getDailyAverage(){
+		Devless.queryData('elcomgh', 'consumption', {where:} )
+	}
 	/*
 	var constants = { "token":"7f0449c4d77ade309aa26ef0a9de6bbe", "domain":"http://localhost:3000" }; Devless = new Devless(constants);
-	*/
+	
 	var startDate = new Date();
 
-	function saveData(){
+	/*function saveData(){
 		setInterval(function(){
 			var endDate = new Date();
 			var datetime = String(Math.floor((endDate.getTime() - startDate.getTime())/1000));
@@ -15,14 +31,26 @@ $(function(){
 			var data = {'datetime': datetime, 'amount': amount};
 			Devless.addData('elcomgh', 'consumption', data, function(response){console.log(response);})
 		}, 5000);
-	}
+	}*/
 
-	$('#submitname').click(function(){
-		var name = $('#name').val();
-		var data = {'name': name};
-		Devless.addData('register', 'namestable', data, function(response){
+	$('#power').click(function(){
+		Devless.queryData('elcomgh', 'switchstate', {where:['id,1']}, function(response){
 			console.log(response);
-			$('#response').text(response.message);
+			if(response.payload.results[0].state === 1){
+				Devless.updateData('elcomgh', 'switchstate', 'id', '1', {'state': '0'}, function(response){
+					console.log(response);
+					if(response.status_code === 619){
+						$('#power-state').text('OFF');
+					}
+				})
+			} else {
+				Devless.updateData('elcomgh', 'switchstate', 'id', '1', {'state': '1'}, function(response){
+					console.log(response);
+					if(response.status_code === 619){
+						$('#power-state').text('ON');
+					}
+				})
+			}
 		});
 	});
 
@@ -45,22 +73,25 @@ $(function(){
 
 		var myLiveChart = new Chart(ctx, startingData);
 		setInterval(function(){
-			id++;
-			var params = {where:["id,"+id]};
+			var dt = new Date(), dts = String(dt.getDate()+'-'+dt.getHours()+':'+dt.getMinutes());
+			var params = {size:1, where:["datetime,"+dts]};
 			Devless.queryData('elcomgh', 'consumption', params, function(response){
+				console.log(response);
 				var newDateTime = response.payload.results[0].datetime,
 						newAmount = response.payload.results[0].amount;
+				$('#figure').text(String(newAmount))
 				xaxis.push(newDateTime);
 				yaxis.push(newAmount);
-				if(xaxis.length > 50){
+				if(xaxis.length > 10){
 					xaxis.shift();
 					yaxis.shift();
 				}
 				myLiveChart.update();
 			});
-		}, 5000);
+		}, 30000);
 	}
 	
+	updateSwitchState();
 	//saveData();
 	chartData();
 });
